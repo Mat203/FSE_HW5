@@ -94,6 +94,44 @@ def delete_user_data(user_id):
     if user_id in previous_state:
         del previous_state[user_id]
 
+def calculate_min_max(user):
+    daily_times = []
+    for period in user['onlinePeriods']:
+        start_time = parse(period[0])
+        end_time = parse(period[1]) if period[1] else datetime.now()
+        daily_times.append((end_time - start_time).total_seconds())
+    return min(daily_times), max(daily_times)
+
+def generate_report(report_name, metrics, users):
+    with open('all_data.json', 'r') as f:
+        all_data = json.load(f)
+    
+    report_data = {}
+    for user in all_data:
+        if user['userId'] not in users:
+            continue
+        user_report = {}
+        if 'dailyAverage' in metrics:
+            _, daily_average = calculate_average_times(user)
+            user_report['dailyAverage'] = daily_average
+        if 'weeklyAverage' in metrics:
+            weekly_average, _ = calculate_average_times(user)
+            user_report['weeklyAverage'] = weekly_average
+        if 'total' in metrics:
+            user_report['total'] = calculate_online_time(user)
+        if 'min' in metrics or 'max' in metrics:
+            min_time, max_time = calculate_min_max(user)
+            if 'min' in metrics:
+                user_report['min'] = min_time
+            if 'max' in metrics:
+                user_report['max'] = max_time
+        report_data[user['userId']] = user_report
+
+    
+    with open(f'{report_name}.json', 'w') as f:
+        json.dump(report_data, f)
+
+    print("Report successfully created.")
 
 if __name__ == "__main__":
     while True:
