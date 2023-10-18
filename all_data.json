@@ -1,1 +1,1 @@
-[{"userId": "user1", "onlinePeriods": [["2023-10-15T08:00:00.000000", "2023-10-15T12:00:00.000000"]], "totalSecondsOnline": 14400}, {"userId": "user2", "onlinePeriods": [["2023-10-15T09:00:00.000000", "2023-10-15T11:00:00.000000"]], "totalSecondsOnline": 7200}]
+[{"userId": "user1", "isOnline": true, "lastSeenDate": "2023-10-15T12:00:00", "onlinePeriods": [["2023-10-15T10:00:00", "2023-10-15T11:00:00"]]}, {"userId": "user2", "isOnline": true, "lastSeenDate": "2023-10-15T15:00:00", "onlinePeriods": [["2023-10-15T14:00:00", "2023-10-15T16:00:00"]]}]

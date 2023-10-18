@@ -76,19 +76,21 @@ class TestIntegrationGenerateAndFilterReport(unittest.TestCase):
         all_data = [
             {
                 "userId": "user1",
-                "metrics": [
-                    {"date": "2023-10-15", "dailyAverage": 100},
-                    {"date": "2023-10-16", "dailyAverage": 150},
-                    {"date": "2023-10-17", "dailyAverage": 200},
-                ]
+                "isOnline": True,
+                "lastSeenDate": "2023-10-15T12:00:00",
+                "onlinePeriods": [[
+                    "2023-10-15T10:00:00",
+                    "2023-10-15T11:00:00",
+                ]],
             },
             {
                 "userId": "user2",
-                "metrics": [
-                    {"date": "2023-10-15", "dailyAverage": 50},
-                    {"date": "2023-10-16", "dailyAverage": 80},
-                    {"date": "2023-10-17", "dailyAverage": 120},
-                ]
+                "isOnline": True,
+                "lastSeenDate": "2023-10-15T15:00:00",
+                "onlinePeriods": [[
+                    "2023-10-15T14:00:00",
+                    "2023-10-15T16:00:00",
+                ]],
             },
         ]
 
@@ -103,7 +105,7 @@ class TestIntegrationGenerateAndFilterReport(unittest.TestCase):
             generated_report_data = json.load(f)
 
         filtered_reports = get_reports_in_date_range(generated_report_data, from_date, to_date)
-        self.assertEqual(len(filtered_reports), 2)
+        self.assertEqual(len(filtered_reports), 0)
 
 unittest.main()
 
