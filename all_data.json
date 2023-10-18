@@ -1,1 +1,1 @@
-[]
+[{"userId": "user1", "onlinePeriods": [["2023-10-15T08:00:00.000000", "2023-10-15T12:00:00.000000"]], "totalSecondsOnline": 14400}, {"userId": "user2", "onlinePeriods": [["2023-10-15T09:00:00.000000", "2023-10-15T11:00:00.000000"]], "totalSecondsOnline": 7200}]

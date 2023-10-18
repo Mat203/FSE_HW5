@@ -1,8 +1,9 @@
 import unittest
 from datetime import datetime, timedelta
-from data_procession import fetch_and_update_data, delete_user_data, previous_state, calculate_days, calculate_min_max, calculate_average_times, calculate_online_time, generate_report
+from data_procession import fetch_and_update_data, delete_user_data, previous_state, calculate_days, calculate_min_max, calculate_average_times, calculate_online_time, generate_report, get_reports_in_date_range
 import json
 from unittest.mock import patch, MagicMock,mock_open
+from dateutil.parser import parse
 
 class TestIntegration(unittest.TestCase):
     @patch('data_procession.get_data')
@@ -69,6 +70,40 @@ class TestIntegration(unittest.TestCase):
         self.assertIn('dailyAverage', report_data['test_user'])
         self.assertIn('weeklyAverage', report_data['test_user'])
         self.assertIn('total', report_data['test_user'])
+
+class TestIntegrationGenerateAndFilterReport(unittest.TestCase):
+    def test_integration_generate_and_filter_report(self):
+        all_data = [
+            {
+                "userId": "user1",
+                "metrics": [
+                    {"date": "2023-10-15", "dailyAverage": 100},
+                    {"date": "2023-10-16", "dailyAverage": 150},
+                    {"date": "2023-10-17", "dailyAverage": 200},
+                ]
+            },
+            {
+                "userId": "user2",
+                "metrics": [
+                    {"date": "2023-10-15", "dailyAverage": 50},
+                    {"date": "2023-10-16", "dailyAverage": 80},
+                    {"date": "2023-10-17", "dailyAverage": 120},
+                ]
+            },
+        ]
+
+        with open("all_data.json", "w") as f:
+            json.dump(all_data, f)
+        generate_report("integration_test_report", ["dailyAverage"], ["user1", "user2"])
+
+        from_date = parse("2023-10-16")
+        to_date = parse("2023-10-17")
+
+        with open("integration_test_report.json", "r") as f:
+            generated_report_data = json.load(f)
+
+        filtered_reports = get_reports_in_date_range(generated_report_data, from_date, to_date)
+        self.assertEqual(len(filtered_reports), 2)
 
 unittest.main()
 
