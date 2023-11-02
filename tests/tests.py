@@ -3,6 +3,7 @@ from unittest.mock import Mock, patch
 from data_procession import get_data 
 from data_procession import update_user_data
 from data_procession import fetch_and_update_data
+import requests
 
 class TestGetDataFunction(unittest.TestCase):
     @patch('data_procession.requests.get')
